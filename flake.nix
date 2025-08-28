@@ -51,5 +51,8 @@
         "marshall@mac" = mkHomeConfig "aarch64-darwin" configs."aarch64-darwin";
         "marshall@linux" = mkHomeConfig "x86_64-linux" configs."x86_64-linux";
       };
+
+      # Export the home.nix as a reusable Home Manager module
+      homeManagerModules.marshall = ./home.nix;
     };
 }
