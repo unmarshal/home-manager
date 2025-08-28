@@ -2,7 +2,6 @@
   description = "Marshall's Home Manager Configuration";
 
   inputs = {
-    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*";
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2505.0";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -10,25 +9,30 @@
     };
   };
 
-  outputs = { self, flake-schemas, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, ... }:
     let
       supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
+      username = "marshall";
+      defaultSystem = "aarch64-darwin"; # Default for macOS
       forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
         pkgs = nixpkgs.legacyPackages.${system};
       });
-      # Default system for direct home-manager usage
-      system = "aarch64-darwin";
-      username = "marshall";
     in
     {
-      schemas = flake-schemas.schemas;
-      # Multi-system configurations
+      # System-specific configurations for monorepo import
       homeConfigurations = forEachSupportedSystem
         ({ pkgs }: {
-          ${username} = home-manager.lib.homeManagerConfiguration {
+          "${username}" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [
               ./home.nix
+              {
+                home = {
+                  username = "${username}";
+                  homeDirectory = if pkgs.stdenv.isLinux then "/home/${username}" else "/Users/${username}";
+                  stateVersion = "25.05"; # Match your home-manager release
+                };
+              }
             ];
             extraSpecialArgs = {
               hostname = "default-host"; # Override in monorepo if needed
@@ -36,15 +40,15 @@
             };
           };
         }) // {
-        # Direct access for default system (macOS)
-        ${username} = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+        # Top-level configuration for direct home-manager usage
+        "${username}" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${defaultSystem};
           modules = [
             ./home.nix
             {
               home = {
                 username = "${username}";
-                homeDirectory = "/Users/marshall";
+                homeDirectory = "/Users/${username}";
                 stateVersion = "25.05"; # Match your home-manager release
               };
             }
