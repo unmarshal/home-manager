@@ -46,6 +46,7 @@
       # Named directories
       hash -d g=~/git/gimli
       hash -d s=~/git/gimli/src
+      hash -d hm=~/git/home-manager
 
       eval "$(${pkgs.coreutils}/bin/dircolors)"
     '';
