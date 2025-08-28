@@ -1,0 +1,91 @@
+{ pkgs
+, config
+, hostname
+, ...
+}: {
+  programs.git = {
+    enable = true;
+    userName = "Marshall Beddoe";
+    userEmail = "mbeddoe@gmail.com";
+    extraConfig = {
+      merge.ff = true;
+      pull.rebase = true;
+      fetch.prune = true;
+      core.editor = "vim";
+      push.autoSetupRemote = true;
+    };
+  };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    plugins = [
+      {
+        name = "zsh-nix-shell";
+        src = pkgs.zsh-nix-shell;
+        file = "share/zsh-nix-shell/nix-shell.plugin.zsh";
+      }
+    ];
+    shellAliases = {
+      start-jupyter = "jupyter notebook --no-browser --NotebookApp.token='' --ip=127.0.0.1";
+      ls = "${pkgs.coreutils}/bin/ls --color -sFhb --group-directories-first";
+      l = "${pkgs.coreutils}/bin/ls -a --color -sFhb --group-directories-first";
+
+      nixfmt = ''find . -type f -name "*.nix" -exec nixpkgs-fmt {} \;'';
+      lcd = ''() { cd ~$1; }'';
+      rebuild = "echo 'Rebuilding ${hostname}' && pushd ~/git/gimli; sudo nixos-rebuild switch --flake .#${hostname}; popd";
+    };
+
+    initContent = ''
+      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+      alias ll='eza -la'
+
+      # Named directories
+      hash -d g=~/git/gimli
+      hash -d s=~/git/gimli/src
+
+      eval "$(${pkgs.coreutils}/bin/dircolors)"
+    '';
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
+  home.packages = with pkgs; [
+    zsh-powerlevel10k
+    zsh-nix-shell
+    eza
+    fzf
+    black
+    nixpkgs-fmt
+    (pkgs.vim_configurable.customize {
+      name = "vim";
+      vimrcConfig = {
+        customRC = "source ${config.home.homeDirectory}/.vimrc";
+        packages.myVimPackage = with pkgs.vimPlugins; {
+          start = [ vim-nix nerdtree jellybeans-vim tcomment_vim ];
+          opt = [ ];
+        };
+      };
+    })
+  ];
+
+  home.file.".vimrc".source = ./dotfiles/vimrc;
+
+  home.sessionVariables = {
+    DIRENV_LOG_FORMAT = "";
+  };
+
+  home.stateVersion = "25.05";
+}

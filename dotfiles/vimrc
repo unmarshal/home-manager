@@ -1,0 +1,81 @@
+" General Settings
+syn on
+set encoding=utf-8              " Ensure UTF-8 encoding
+set mouse=                      " Disable mouse
+set backspace=indent,eol,start  " Ensure backspace works as expected
+
+" Appearance
+set termguicolors               " Enable true colors
+colorscheme jellybeans          " Use Jellybeans color scheme
+set list                        " Display whitespace
+set listchars=tab:>.,extends:#,nbsp:.
+set laststatus=2                " Always show statusline
+set statusline=%t               " Tail of the filename
+set statusline+=[%{strlen(&fenc)?&fenc:'none'}, " File encoding
+set statusline+=%{&ff}]         " File format
+set statusline+=%h              " Help file flag
+set statusline+=%m              " Modified flag
+set statusline+=%r              " Read only flag
+set statusline+=%y              " Filetype
+set statusline+=%=              " Left/right separator
+set statusline+=%c,             " Cursor column
+set statusline+=%l/%L           " Cursor line/total lines
+set statusline+=\ %P            " Percent through file
+
+" Indentation
+set tabstop=4                   " 4 spaces per tab
+set softtabstop=4               " 4 spaces for soft tabs
+set shiftwidth=4                " 4 spaces for indentation
+set expandtab                   " Use spaces instead of tabs
+set smarttab                    " Smart tab handling
+set autoindent                  " Copy indent from current line
+set smartindent                 " Smart indenting for code
+set textwidth=120               " Wrap at 120 characters
+
+" Search
+set incsearch                   " Incremental search
+set hlsearch!                   " Toggleable highlight search
+set nohlsearch                  " Disable highlight on startup
+
+" Keybindings
+let mapleader = "\<Space>"      " Set leader to space
+nmap <C-_> :TComment<CR>        " Toggle comment in normal mode (VS Code style)
+vmap <C-_> :TComment<CR>        " Toggle comment in visual mode (VS Code style)
+nnoremap <Leader>e :NERDTreeToggle<CR> " Toggle NERDTree
+nnoremap <Leader>w :w<CR>       " Save file
+nnoremap <Leader>q :q<CR>       " Quit
+nnoremap ; :                    " Remap : to ; for faster command mode
+vmap Q gq                       " Format paragraph in visual mode
+nmap Q gqap                     " Format paragraph in normal mode
+noremap <Leader>k :tabprevious<CR> " Previous tab
+noremap <Leader>j :tabnext<CR>  " Next tab
+noremap <Leader>t :tabnew<CR>   " New tab
+vmap <C-x> >gv                  " Indent right in visual mode
+vmap <C-z> <gv                  " Indent left in visual mode
+set pastetoggle=<C-v>           " Toggle paste mode
+nnoremap <F2> :set number!<CR>   " Make line numbers toggle
+nnoremap <F3> :set hlsearch!<CR> " Make highlight search toggle
+
+" Convert tabs to spaces on file save and strip trailing whitespace
+" retab will work even in paste mode
+augroup expandtab_on_save
+  autocmd!
+  autocmd BufWritePre * let b:paste = &paste | if b:paste | set nopaste | endif | :retab | :%s/\s\+$//e | if b:paste | set paste | endif
+augroup END
+
+augroup nix
+  autocmd!
+  autocmd FileType nix setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+augroup END
+
+" Cursor Restoration
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
