@@ -84,6 +84,8 @@
 
   home.file.".vimrc".source = ./dotfiles/vimrc;
   home.file.".p10k.zsh".source = ./dotfiles/p10k.zsh;
+  home.file.".alacritty.toml".source = ./dotfiles/alacritty.toml;
+  home.file.".tmux.conf".source = ./dotfiles/tmux.conf;
 
   home.sessionVariables = {
     DIRENV_LOG_FORMAT = "";
