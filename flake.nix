@@ -7,57 +7,49 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, flake-utils, ... }@inputs:
     let
-      supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
-      username = "marshall";
-      defaultSystem = "aarch64-darwin"; # Default for macOS
-      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
-        pkgs = nixpkgs.legacyPackages.${system};
-      });
-    in
-    {
-      # System-specific configurations for monorepo import
-      homeConfigurations = forEachSupportedSystem
-        ({ pkgs }: {
-          "${username}" = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            modules = [
-              ./home.nix
-              {
-                home = {
-                  username = "${username}";
-                  homeDirectory = if pkgs.stdenv.isLinux then "/home/${username}" else "/Users/${username}";
-                  stateVersion = "25.05"; # Match your home-manager release
-                };
-              }
-            ];
-            extraSpecialArgs = {
-              hostname = "default-host"; # Override in monorepo if needed
-              isNixOS = pkgs.stdenv.isLinux;
-            };
-          };
-        }) // {
-        # Top-level configuration for direct home-manager usage
-        "${username}" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${defaultSystem};
+      # Define system-specific configurations
+      configs = {
+        "aarch64-darwin" = {
+          username = "marshall";
+          homeDirectory = "/Users/marshall";
+          hostname = "wintermute";
+        };
+        "x86_64-linux" = {
+          username = "marshall"; # Adjust if username differs on Linux
+          homeDirectory = "/home/marshall";
+          hostname = "work-linux"; # Adjust to your work machine's hostname
+        };
+      };
+
+      # Helper function to create a Home Manager configuration
+      mkHomeConfig = system: userConfig:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs { inherit system; };
           modules = [
             ./home.nix
             {
               home = {
-                username = "${username}";
-                homeDirectory = "/Users/${username}";
-                stateVersion = "25.05"; # Match your home-manager release
+                username = userConfig.username;
+                homeDirectory = userConfig.homeDirectory;
+                stateVersion = "25.05";
               };
             }
           ];
           extraSpecialArgs = {
-            hostname = "default-host"; # Override in monorepo if needed
-            isNixOS = false; # macOS is not NixOS
+            hostname = userConfig.hostname;
           };
         };
+    in
+    {
+      # Define homeConfigurations at the top level
+      homeConfigurations = {
+        "marshall@mac" = mkHomeConfig "aarch64-darwin" configs."aarch64-darwin";
+        "marshall@linux" = mkHomeConfig "x86_64-linux" configs."x86_64-linux";
       };
     };
 }
