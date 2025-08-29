@@ -71,6 +71,7 @@
     black
     tree
     fd
+    tmux
     nixpkgs-fmt
     (pkgs.vim_configurable.customize {
       name = "vim";

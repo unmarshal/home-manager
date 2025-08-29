@@ -705,7 +705,7 @@ semantic_escape_chars = ",│`|:\"' ()[]<>\t"
 
 [terminal.shell]
 args = ["new-session", "-A", "-D", "-s", "main"]
-program = "/opt/homebrew/bin/tmux"
+program = "/Users/marshall/.nix-profile/bin/tmux"
 
 [window]
 decorations = "None"
