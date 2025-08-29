@@ -70,6 +70,7 @@
     fzf
     black
     tree
+    fd
     nixpkgs-fmt
     (pkgs.vim_configurable.customize {
       name = "vim";
@@ -90,6 +91,8 @@
 
   home.sessionVariables = {
     DIRENV_LOG_FORMAT = "";
+    FZF_DEFAULT_COMMAND = "fd --type f --exclude .git";
+    FZF_ALT_C_COMMAND = "fd --type d --hidden --exclude .git";
   };
 
   home.stateVersion = "25.05";
