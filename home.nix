@@ -69,6 +69,7 @@
     eza
     fzf
     black
+    tree
     nixpkgs-fmt
     (pkgs.vim_configurable.customize {
       name = "vim";
