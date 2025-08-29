@@ -20,9 +20,9 @@
           hostname = "wintermute";
         };
         "x86_64-linux" = {
-          username = "marshall"; # Adjust if username differs on Linux
+          username = "marshall";
           homeDirectory = "/home/marshall";
-          #hostname = "work-linux"; # Adjust to your work machine's hostname
+          hostname = "marshall-dev";
         };
       };
 
@@ -49,7 +49,7 @@
       # Define homeConfigurations at the top level
       homeConfigurations = {
         "marshall@mac" = mkHomeConfig "aarch64-darwin" configs."aarch64-darwin";
-        "marshall@linux" = mkHomeConfig "x86_64-linux" configs."x86_64-linux";
+        "marshall@marshall-dev" = mkHomeConfig "x86_64-linux" configs."x86_64-linux";
       };
 
       # Export the home.nix as a reusable Home Manager module
