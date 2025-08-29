@@ -711,7 +711,7 @@ program = "/opt/homebrew/bin/tmux"
 decorations = "None"
 dynamic_padding = false
 dynamic_title = true
-opacity = 0.70
+opacity = 0.90
 startup_mode = "Windowed"
 
 # Use left option key as alt
