@@ -22,7 +22,7 @@
         "x86_64-linux" = {
           username = "marshall"; # Adjust if username differs on Linux
           homeDirectory = "/home/marshall";
-          hostname = "work-linux"; # Adjust to your work machine's hostname
+          #hostname = "work-linux"; # Adjust to your work machine's hostname
         };
       };
 
