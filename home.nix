@@ -73,6 +73,7 @@
     fd
     tmux
     nixpkgs-fmt
+    btop
     (pkgs.vim_configurable.customize {
       name = "vim";
       vimrcConfig = {
