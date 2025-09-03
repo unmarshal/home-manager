@@ -38,9 +38,11 @@ set hlsearch!                   " Toggleable highlight search
 set nohlsearch                  " Disable highlight on startup
 
 " Keybindings
-let mapleader = "\<Space>"      " Set leader to space
+
+let mapleader = ","             " <Leader> is comma
+
 nmap <C-_> :TComment<CR>        " Toggle comment in normal mode (VS Code style)
-vmap <C-_> :TComment<CR>        " Toggle comment in visual mode (VS Code style)
+
 nnoremap <Leader>e :NERDTreeToggle<CR> " Toggle NERDTree
 nnoremap <Leader>w :w<CR>       " Save file
 nnoremap <Leader>q :q<CR>       " Quit
