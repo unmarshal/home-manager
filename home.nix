@@ -6,7 +6,7 @@
   programs.git = {
     enable = true;
     userName = "Marshall Beddoe";
-    userEmail = "mbeddoe@gmail.com";
+    userEmail = "marshall@menlosecurity.com";
     extraConfig = {
       merge.ff = true;
       pull.rebase = true;
@@ -44,9 +44,10 @@
       alias ll='eza -la'
 
       # Named directories
-      hash -d g=~/git/gimli
+      hash -d g=~/git
       hash -d s=~/git/gimli/src
       hash -d hm=~/git/home-manager
+      hash -d i=~/git/icap
 
       eval "$(${pkgs.coreutils}/bin/dircolors)"
     '';
@@ -74,6 +75,7 @@
     tmux
     nixpkgs-fmt
     btop
+    ripgrep
     (pkgs.vim_configurable.customize {
       name = "vim";
       vimrcConfig = {
