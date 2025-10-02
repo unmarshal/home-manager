@@ -48,6 +48,7 @@
       hash -d s=~/git/gimli/src
       hash -d hm=~/git/home-manager
       hash -d i=~/git/icap
+      hash -d t=~/git/tungsten
 
       eval "$(${pkgs.coreutils}/bin/dircolors)"
     '';
