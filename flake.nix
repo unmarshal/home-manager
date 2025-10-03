@@ -49,7 +49,7 @@
       # Define homeConfigurations at the top level
       homeConfigurations = {
         "marshall@mac" = mkHomeConfig "aarch64-darwin" configs."aarch64-darwin";
-        "marshall@marshall-dev" = mkHomeConfig "x86_64-linux" configs."x86_64-linux";
+        "marshall@linux" = mkHomeConfig "x86_64-linux" configs."x86_64-linux";
       };
 
       # Export the home.nix as a reusable Home Manager module

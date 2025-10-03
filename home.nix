@@ -29,19 +29,20 @@
       }
     ];
     shellAliases = {
-      start-jupyter = "jupyter notebook --no-browser --NotebookApp.token='' --ip=127.0.0.1";
       ls = "${pkgs.coreutils}/bin/ls --color -sFhb --group-directories-first";
       l = "${pkgs.coreutils}/bin/ls -a --color -sFhb --group-directories-first";
 
       nixfmt = ''find . -type f -name "*.nix" -exec nixpkgs-fmt {} \;'';
       lcd = ''() { cd ~$1; }'';
-      rebuild = "echo 'Rebuilding ${hostname}' && pushd ~/git/gimli; sudo nixos-rebuild switch --flake .#${hostname}; popd";
+      rebuild = "echo 'Rebuilding ${HOSTNAME}' && pushd ~/git/gimli; sudo nixos-rebuild switch --flake .#${HOSTNAME}; popd";
     };
 
     initContent = ''
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
       alias ll='eza -la'
+
+      HOSTNAME=$(hostname)
 
       # Named directories
       hash -d g=~/git
@@ -88,6 +89,7 @@
 
   home.file.".vimrc".source = ./dotfiles/vimrc;
   home.file.".p10k.zsh".source = ./dotfiles/p10k.zsh;
+  # TODO: Make alacritty config conditional. Not needed on Arch.
   home.file.".alacritty.toml".source = ./dotfiles/alacritty.toml;
   home.file.".tmux.conf".source = ./dotfiles/tmux.conf;
 
