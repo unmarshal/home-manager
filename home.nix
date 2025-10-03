@@ -34,7 +34,7 @@
 
       nixfmt = ''find . -type f -name "*.nix" -exec nixpkgs-fmt {} \;'';
       lcd = ''() { cd ~$1; }'';
-      rebuild = "echo 'Rebuilding ${HOSTNAME}' && pushd ~/git/gimli; sudo nixos-rebuild switch --flake .#${HOSTNAME}; popd";
+#      rebuild = "echo 'Rebuilding ${HOSTNAME}' && pushd ~/git/gimli; sudo nixos-rebuild switch --flake .#${HOSTNAME}; popd";
     };
 
     initContent = ''
@@ -43,6 +43,7 @@
       alias ll='eza -la'
 
       HOSTNAME=$(hostname)
+      alias rebuild="echo 'Rebuilding $HOSTNAME' && pushd ~/git/gimli; sudo nixos-rebuild switch --flake .#$HOSTNAME; popd"
 
       # Named directories
       hash -d g=~/git
@@ -50,6 +51,8 @@
       hash -d hm=~/git/home-manager
 
       eval "$(${pkgs.coreutils}/bin/dircolors)"
+
+      bindkey -e
     '';
   };
 
