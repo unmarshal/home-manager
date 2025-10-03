@@ -44,7 +44,7 @@
       alias ll='eza -la'
 
       # Named directories
-      hash -d g=~/git/gimli
+      hash -d g=~/git
       hash -d s=~/git/gimli/src
       hash -d hm=~/git/home-manager
 
