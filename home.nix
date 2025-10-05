@@ -45,6 +45,10 @@
       HOSTNAME=$(hostname)
       alias rebuild="echo 'Rebuilding $HOSTNAME' && pushd ~/git/gimli; sudo nixos-rebuild switch --flake .#$HOSTNAME; popd"
 
+      alias zed=/usr/lib/zed/zed-editor
+      alias open=nautilus
+      alias pbcopy=wl-copy
+
       # Named directories
       hash -d g=~/git
       hash -d s=~/git/gimli/src
