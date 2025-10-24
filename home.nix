@@ -32,7 +32,6 @@
       ls = "${pkgs.coreutils}/bin/ls --color -sFhb --group-directories-first";
       l = "${pkgs.coreutils}/bin/ls -a --color -sFhb --group-directories-first";
 
-      nixfmt = ''find . -type f -name "*.nix" -exec nixpkgs-fmt {} \;'';
       lcd = ''() { cd ~$1; }'';
 #      rebuild = "echo 'Rebuilding ${HOSTNAME}' && pushd ~/git/gimli; sudo nixos-rebuild switch --flake .#${HOSTNAME}; popd";
     };
