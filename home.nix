@@ -52,6 +52,8 @@
       eval "$(${pkgs.coreutils}/bin/dircolors)"
 
       bindkey -e
+
+      export PATH="$PATH:/Users/marshall/go/bin"
     '';
   };
 
