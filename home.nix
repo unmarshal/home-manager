@@ -13,6 +13,8 @@
       fetch.prune = true;
       core.editor = "vim";
       push.autoSetupRemote = true;
+      rerere.enabled = true;
+      rerere.autoupdate = true;
     };
   };
 
